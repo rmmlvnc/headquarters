@@ -93,7 +93,7 @@ export default function RegisterScreen() {
     try {
       const data = await registerMember({ email, password, fullName, mobileNumber });
       if (!data.session) {
-        setServerMessage('Check your inbox to confirm your email, then return here to log in. If you already have an account, use Log in.');
+        setServerMessage('Verification email sent. Open the HeadQuarters email, tap Confirm your email address, then return to this app and log in. Check Spam or Promotions if it is not in your inbox.');
         setPassword(''); setConfirmPassword('');
       }
     } catch (error) {
@@ -105,7 +105,7 @@ export default function RegisterScreen() {
   };
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" backgroundColor="#F7F6FB" />
+      <StatusBar barStyle="dark-content" />
 
       <KeyboardAvoidingView
         style={styles.keyboardContainer}
@@ -131,7 +131,7 @@ export default function RegisterScreen() {
           <Text style={styles.title}>Create your account</Text>
 
           <Text style={styles.subtitle}>
-            Join HeadQuarters and reserve your ideal workspace.
+            Join HeadQuarters and reserve your ideal workspace. You will verify your email before you can log in.
           </Text>
 
           <View style={styles.form}>

@@ -1,2 +1,2 @@
 import { Redirect } from 'expo-router';
-export default function Explore() { return <Redirect href="/home" />; }
+export default function Explore() { return <Redirect href={{pathname:'/home',params:{view:'Features'}}} />; }

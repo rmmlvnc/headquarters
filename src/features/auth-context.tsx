@@ -3,6 +3,7 @@ import { AppState, Platform } from 'react-native';
 import type { Session } from '@supabase/supabase-js';
 import { configurationError, supabase } from '../lib/supabase';
 import { authError } from '../lib/auth-api';
+import { registerPushToken } from '../lib/notifications';
 const AuthContext = createContext<{ session: Session | null; loading: boolean; error: string | null; retry: () => void }>({ session: null, loading: true, error: null, retry: () => {} });
 export function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
@@ -33,6 +34,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
     if (Platform.OS !== 'web') refresh(AppState.currentState);
     return () => { alive = false; subscription.unsubscribe(); listener?.remove(); if (Platform.OS !== 'web') supabase!.auth.stopAutoRefresh(); };
   }, [attempt]);
+  useEffect(() => {
+    if (!session?.user.id) return;
+    // Permission is requested only on real Android/iOS installs. Failure to
+    // allow notifications must never block login or bookings.
+    void registerPushToken(session.user.id).catch(() => undefined);
+  }, [session?.user.id]);
   return <AuthContext.Provider value={{ session, loading, error, retry: () => setAttempt(n => n + 1) }}>{children}</AuthContext.Provider>;
 }
 export const useAuth = () => useContext(AuthContext);

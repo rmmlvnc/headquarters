@@ -2896,6 +2896,14 @@ export function MemberWorkspace({
                     </View>
                   </View>
                 </View>
+                <Card>
+                  <MenuRow
+                    icon="shield"
+                    title="Staff portal"
+                    description="Open admin dashboard - assigned staff only"
+                    onPress={() => router.push("/admin")}
+                  />
+                </Card>
                 <Section title="Membership" />
                 <Pressable
                   accessibilityRole="button"
@@ -2952,12 +2960,6 @@ export function MemberWorkspace({
                     icon="help"
                     title="Help & support"
                     onPress={() => go("Help & Support")}
-                  />
-                  <MenuRow
-                    icon="shield"
-                    title="Staff portal"
-                    description="Requires an assigned Supabase staff role"
-                    onPress={() => router.push("/admin")}
                   />
                 </Card>
                 <Badge

@@ -7,7 +7,7 @@ The staff portal is implemented in the app and uses Supabase tables and server f
 1. In Supabase Dashboard, open **SQL Editor → New query**.
 2. Paste the complete contents of `supabase/migrations/20261013_admin.sql` and select **Run**. Run this migration once; it uses a transaction, so a failure rolls back its changes. Do not rerun after a successful migration.
 3. Register your staff account through the app and confirm its email.
-4. Open `supabase/assign-admin.sql`, replace `REPLACE_WITH_YOUR_ADMIN_EMAIL` with that account's email, and run the script in SQL Editor. Verify that the output contains the intended email. Do not grant access to ordinary member accounts.
+4. Run `supabase/migrations/20261113_assign_designated_admin.sql` (also available as `supabase/assign-admin.sql`) in SQL Editor to assign the confirmed account `rmmlvnc@gmail.com`. The script is safe to rerun and reports an error if that confirmed account does not exist. Verify that the output contains the intended email. Do not grant access to ordinary member accounts.
 5. Restart Expo if needed, log in, and open **Profile → Staff portal**. Select **Refresh**.
 
 To revoke staff access, the project owner can delete the intended user ID from `public.hq_staff` in the dashboard. Backend authorization checks apply to each operation; member accounts cannot insert themselves into that table or forge a role through profile metadata.
@@ -50,3 +50,7 @@ node scripts/test-admin-db.cjs
 ```
 
 After hosted migration, test staff and ordinary member accounts separately. Verify denied role assignment and reservation access, overlapping capacity rejection, check-in/out, renewal, refund review, and audit visibility.
+
+## Updating an existing installation
+
+If the staff tables already exist, run only `20261113_assign_designated_admin.sql`; do not rerun the original admin migration. Install the updated app build (or reload the updated Expo bundle). Profile now shows **Staff portal** directly below the account header, above Membership. This entry opens the protected dashboard; email text and editable profile metadata never grant access. The dashboard checks the current server role on every refresh.
